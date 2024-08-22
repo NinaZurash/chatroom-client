@@ -55,8 +55,10 @@ export default function SignInPage() {
   const mutation = useMutation({
     mutationFn: signIn,
     onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("username", JSON.stringify(data.user.name));
+      if (typeof window !== "undefined") {
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("username", JSON.stringify(data.user.name));
+      }
       router.push("/");
     },
     onError: (error) => {

@@ -14,10 +14,12 @@ export default function ChatRoom() {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [connectionError, setConnectionError] = useState<boolean>(false);
   const router = useRouter();
-  const username = localStorage.getItem("username");
+  const username =
+    typeof window !== "undefined" ? localStorage.getItem("username") : "Guest";
 
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Get token from local storage
+    const token =
+      typeof window !== "undefined" ? localStorage.getItem("token") : ""; // Get token from local storage
 
     if (!token || !username) {
       router.push("/sign-in"); // Redirect to sign-in page if token or username is not available
@@ -73,8 +75,10 @@ export default function ChatRoom() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("username");
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("token");
+      localStorage.removeItem("username");
+    }
     router.push("/sign-in");
   };
 
